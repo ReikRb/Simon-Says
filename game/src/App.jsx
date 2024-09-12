@@ -106,7 +106,7 @@ useEffect(() => {
         setTimeout(() => {
           colors[item].ref.current.style.opacity = (0.5);
         }, speed / 2)
-      }, speed * 2)
+      }, speed * index)
     })
   }
   setIsAllowedToPlay(true);
@@ -127,7 +127,7 @@ const randomNumber = () => {
 const handleClick = (index) => {
   if (isAllowedToPlay) {
     play({id: colors[index].sound})
-    colors[index].ref.current.style.opacity = (0.5);
+    colors[index].ref.current.style.opacity = (1);
     colors[index].ref.current.style.scale = (0.9);
     setTimeout(()=>{
       colors[index].ref.current.style.opacity = (0.5);
