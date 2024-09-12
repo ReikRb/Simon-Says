@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, useEffect, useRef } from "react";
+import useSound from 'use-sound';
+import simon from './assets/sounds/sprite.mp3';
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+function App(){
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+const blueRef   = useRef(null);
+const yellowRef = useRef(null);
+const greenRef  = useRef(null);
+const redRef    = useRef(null);
+
+const [play] = useSound(simon, {
+  sprite: {
+    one: [0, 500],
+    two: [1000, 500],
+    three: [2000, 500],
+    four: [3000, 500],
+    error: [4000, 1000]
+  },
+});
+
+const colors = [
+  {
+    color: '#FAF303',
+    ref: yellowRef,
+    sound: 'one'
+  },
+  {
+    color: '#030AFA',
+    ref: blueRef,
+    sound: 'two'
+  },
+  {
+    color: '#FA0E03',
+    ref: redRef,
+    sound: 'three'
+  },
+  {
+    color: '#0aFA03',
+    ref: greenRef,
+    sound: 'four'
+  }
+];
+
+const minNumber = 0;
+const maxNumber = 0;
+const speedGame = 400;
+
+const [sequence, setSequence] = useState([]);
+const [currentGame, setcurrentGame] = useState([]);
+const [isAllowedToPlay, setisAllowedToPlay] = useState(false);
+const [speed, setSpeed] = useState(speedGame);
+const [turn, setTurn] = useState(0);
+const [pulses, setPulses] = useState(0); 
+const [success, setSuccess] = useState(0);
+const [isGameOn, setIsGameOn] = useState(false);
+
 }
-
 export default App
