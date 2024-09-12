@@ -97,6 +97,21 @@ useEffect(() => {
   }
 }, [success])
 
+useEffect(() => {
+  if (!isAllowedToPlay) {
+    sequence.map ((item, index) =>{
+      setTimeout(() => {
+        play({id: colors[item].sound})
+        colors[item].ref.current.style.opacity = (1);
+        setTimeout(() => {
+          colors[item].ref.current.style.opacity = (0.5);
+        }, speed / 2)
+      }, speed * 2)
+    })
+  }
+  setisAllowedToPlay(true);
+}, [sequence])
+
 const initGame = () => {
   randomNumber();
   setIsGameOn(true);
