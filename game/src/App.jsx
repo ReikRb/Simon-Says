@@ -48,7 +48,7 @@ const maxNumber = 0;
 const speedGame = 400;
 
 const [sequence, setSequence] = useState([]);
-const [currentGame, setcurrentGame] = useState([]);
+const [currentGame, setCurrentGame] = useState([]);
 const [isAllowedToPlay, setisAllowedToPlay] = useState(false);
 const [speed, setSpeed] = useState(speedGame);
 const [turn, setTurn] = useState(0);
@@ -73,10 +73,23 @@ useEffect(() =>{
   }
 }, [pulses])
 
+useEffect(() => {
+  if (!isGameOn) {
+    setSequence([]);
+    setCurrentGame([]);
+    setisAllowedToPlay(false);
+    setSpeed(speedGame);
+    setSuccess(0);
+    setPulses(0);
+    setTurn(0);
+  }
+}, [isGameOn])
+
 const initGame = () => {
   randomNumber();
   setIsGameOn(true);
 }
+
 const randomNumber = () => {
   setisAllowedToPlay(false);
   const randomNumber = Math.floor(Math.random() * (maxNumber - minNumber + 1) + minNumber)
@@ -92,7 +105,7 @@ const handleClick = (index) => {
     setTimeout(()=>{
       colors[index].ref.current.style.opacity = (0.5);
       colors[index].ref.current.style.scale = (1);
-      setcurrentGame([...currentGame, index]);
+      setCurrentGame([...currentGame, index]);
       setPulses(pulses+1);
     }, speed / 2);
   }
