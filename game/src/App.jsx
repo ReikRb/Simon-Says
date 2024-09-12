@@ -56,6 +56,23 @@ const [pulses, setPulses] = useState(0);
 const [success, setSuccess] = useState(0);
 const [isGameOn, setIsGameOn] = useState(false);
 
+useEffect(() =>{
+  if (pulses > 0) {
+    if (Number(sequence[pulses - 1]) === Number(currentGame[pulses- 1])) {
+      setSuccess(success + 1);
+    } else{
+      const index = sequence[pulses-1]
+      if (index) colors[index].ref.current.style.opacity = (1);
+      play({id:'error'})
+      setTimeout(()=>{
+        if (index) colors[index].ref.current.style.opacity = (0.5);
+        setIsGameOn(false);
+      }, speed * 2)
+      setisAllowedToPlay(false);
+    }
+  }
+}, [pulses])
+
 const initGame = () => {
   randomNumber();
   setIsGameOn(true);
