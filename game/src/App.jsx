@@ -85,6 +85,18 @@ useEffect(() => {
   }
 }, [isGameOn])
 
+useEffect(() => {
+  if (success === sequence.length && success > 0) {
+    setSpeed(speed - sequence.length * 2);
+    setTimeout(() => {
+      setSuccess(0);
+      setPulses(0);
+      setCurrentGame([]);
+      randomNumber();
+    }, 500);
+  }
+}, [success])
+
 const initGame = () => {
   randomNumber();
   setIsGameOn(true);
