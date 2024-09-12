@@ -56,6 +56,11 @@ const [pulses, setPulses] = useState(0);
 const [success, setSuccess] = useState(0);
 const [isGameOn, setIsGameOn] = useState(false);
 
+const initGame = () => {
+  randomNumber();
+  setIsGameOn(true);
+}
+
   return(
     <>
     {
