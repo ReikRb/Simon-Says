@@ -60,6 +60,12 @@ const initGame = () => {
   randomNumber();
   setIsGameOn(true);
 }
+const randomNumber = () => {
+  setisAllowedToPlay(false);
+  const randomNumber = Math.floor(Math.random() * (maxNumber - minNumber + 1) + minNumber)
+  setSequence([...sequence, randomNumber]);
+  setTurn(turn + 1);
+}
 
   return(
     <>
