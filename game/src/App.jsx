@@ -24,22 +24,26 @@ const colors = [
   {
     color: '#FAF303',
     ref: yellowRef,
-    sound: 'one'
+    sound: 'one',
+    img: './assets/imgs/simon_yellow.png'
   },
   {
     color: '#030AFA',
     ref: blueRef,
-    sound: 'two'
+    sound: 'two',
+    img: './assets/imgs/simon_blue.png'
   },
   {
     color: '#FA0E03',
     ref: redRef,
-    sound: 'three'
+    sound: 'three',
+    img: './assets/imgs/simon_red.png'
   },
   {
     color: '#0aFA03',
     ref: greenRef,
-    sound: 'four'
+    sound: 'four',
+    img: './assets/imgs/simon_green.png'
   }
 ];
 
