@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import useSound from 'use-sound';
 import simon from './assets/sounds/sprite.mp3';
+import tavern from './assets/imgs/tavern.png';
+import yellow from './assets/imgs/simon_yellow.png';
+import blue from './assets/imgs/simon_blue.png'
+import red from './assets/imgs/simon_red.png';
+import green from './assets/imgs/simon_green.png'
+import fail from './assets/imgs/fail.png'
 import './App.css'
 
 function App(){
@@ -22,28 +28,28 @@ const [play] = useSound(simon, {
 
 const colors = [
   {
-    color: '#FAF303',
-    ref: yellowRef,
-    sound: 'one',
-    img: './assets/imgs/simon_yellow.png'
-  },
-  {
     color: '#030AFA',
     ref: blueRef,
+    sound: 'one',
+    img: blue
+  },
+  {
+    color: '#0aFA03',
+    ref: greenRef,
     sound: 'two',
-    img: './assets/imgs/simon_blue.png'
+    img: green
   },
   {
     color: '#FA0E03',
     ref: redRef,
     sound: 'three',
-    img: './assets/imgs/simon_red.png'
+    img: red
   },
   {
-    color: '#0aFA03',
-    ref: greenRef,
+    color: '#FAF303',
+    ref: yellowRef,
     sound: 'four',
-    img: './assets/imgs/simon_green.png'
+    img: yellow
   }
 ];
 
@@ -59,6 +65,7 @@ const [turn, setTurn] = useState(0);
 const [pulses, setPulses] = useState(0); 
 const [success, setSuccess] = useState(0);
 const [isGameOn, setIsGameOn] = useState(false);
+const [backgroundImage, setBackgroundImage] = useState(tavern);
 
 useEffect(() =>{
   if (pulses > 0) {
@@ -66,10 +73,10 @@ useEffect(() =>{
       setSuccess(success + 1);
     } else{
       const index = sequence[pulses-1]
-      if (index) colors[index].ref.current.style.opacity = (1);
+      if (index) setBackgroundImage(fail);
       play({id:'error'})
       setTimeout(()=>{
-        if (index) colors[index].ref.current.style.opacity = (0.5);
+        if (index) setBackgroundImage(tavern);
         setIsGameOn(false);
       }, speed * 2)
       setIsAllowedToPlay(false);
@@ -106,9 +113,9 @@ useEffect(() => {
     sequence.map ((item, index) =>{
       setTimeout(() => {
         play({id: colors[item].sound})
-        colors[item].ref.current.style.opacity = (1);
+        setBackgroundImage(colors[item].img);
         setTimeout(() => {
-          colors[item].ref.current.style.opacity = (0.5);
+          setBackgroundImage(tavern);
         }, speed / 2)
       }, speed * index)
     })
@@ -131,11 +138,9 @@ const randomNumber = () => {
 const handleClick = (index) => {
   if (isAllowedToPlay) {
     play({id: colors[index].sound})
-    colors[index].ref.current.style.opacity = (1);
-    colors[index].ref.current.style.scale = (0.9);
+    setBackgroundImage(colors[index].img);
     setTimeout(()=>{
-      colors[index].ref.current.style.opacity = (0.5);
-      colors[index].ref.current.style.scale = (1);
+      setBackgroundImage(tavern);
       setCurrentGame([...currentGame, index]);
       setPulses(pulses+1);
     }, speed / 2);
@@ -148,6 +153,11 @@ const handleClick = (index) => {
       isGameOn 
       ?
       <>
+      <div
+            className="background-container"
+            style={{ backgroundImage: `url(${backgroundImage})` }}
+          >
+      </div>
       <div className="header">
         <h1>Turn{turn}</h1>
       </div>
@@ -158,7 +168,6 @@ const handleClick = (index) => {
             key={index}
             ref={item.ref}
             className={`pad pad-${index}`}
-            style={{backgroundColor: `${item.color}`, opacity:0.6}}
             onClick={()=> handleClick(index)}
             >
             </div>
