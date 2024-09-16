@@ -7,6 +7,7 @@ import blue from './assets/imgs/simon_blue.png'
 import red from './assets/imgs/simon_red.png';
 import green from './assets/imgs/simon_green.png'
 import fail from './assets/imgs/fail.png'
+import outside from './assets/imgs/outside.png'
 import './App.css'
 
 function App(){
@@ -56,6 +57,7 @@ const colors = [
 const minNumber = 0;
 const maxNumber = 3;
 const speedGame = 400;
+const imageUrls = [tavern, fail, red, blue, green, yellow];
 
 const [sequence, setSequence] = useState([]);
 const [currentGame, setCurrentGame] = useState([]);
@@ -65,8 +67,13 @@ const [turn, setTurn] = useState(0);
 const [pulses, setPulses] = useState(0); 
 const [success, setSuccess] = useState(0);
 const [isGameOn, setIsGameOn] = useState(false);
-const [backgroundImage, setBackgroundImage] = useState(tavern);
+const [backgroundImage, setBackgroundImage] = useState(outside);
+const [imagesLoaded, setImagesLoaded] = useState(false);
 
+useEffect(() => {
+  preloadImages();
+}, []);
+  
 useEffect(() =>{
   if (pulses > 0) {
     if (Number(sequence[pulses - 1]) === Number(currentGame[pulses- 1])) {
@@ -76,7 +83,7 @@ useEffect(() =>{
       if (index) setBackgroundImage(fail);
       play({id:'error'})
       setTimeout(()=>{
-        if (index) setBackgroundImage(tavern);
+        if (index) setBackgroundImage(outside);
         setIsGameOn(false);
       }, speed * 2)
       setIsAllowedToPlay(false);
@@ -123,6 +130,26 @@ useEffect(() => {
   setIsAllowedToPlay(true);
 }, [sequence])
 
+const preloadImages = () => {
+
+  const totalImages = imageUrls.length;
+  let loadedImages = 0;
+
+  imageUrls.forEach(url => {
+    const img = new Image();
+    img.src = url;
+    img.onload = () => {
+      loadedImages += 1;
+      if (loadedImages === totalImages) {
+        setImagesLoaded(true);
+      }
+    };
+    img.onerror = () => {
+      console.error(`Error loading image: ${url}`);
+    };
+  });
+};
+
 const initGame = () => {
   randomNumber();
   setIsGameOn(true);
@@ -149,31 +176,41 @@ const handleClick = (index) => {
 
   return(
     <>
-    {
-      isGameOn 
-      ?
-      <>
-      <div
+    <div
             className="background-container"
             style={{ backgroundImage: `url(${backgroundImage})` }}
           >
-      </div>
-      <div className="header">
-        <h1>Turn{turn}</h1>
-      </div>
-      <div className="container">
-        {colors.map((item, index) =>{
-          return (
-            <div
-            key={index}
-            ref={item.ref}
-            className={`pad pad-${index}`}
-            onClick={()=> handleClick(index)}
-            >
-            </div>
-          )
-        }) }
-      </div>
+          </div>
+    {
+      isGameOn
+      ?
+      <>
+      {
+        imagesLoaded
+        ?
+        <>
+          <div className="header">
+            <h1>Turn{turn}</h1>
+          </div>
+          <div className="container">
+            {colors.map((item, index) =>{
+              return (
+                <div
+                key={index}
+                ref={item.ref}
+                className={`pad pad-${index}`}
+                onClick={()=> handleClick(index)}
+                >
+                </div>
+              )
+            }) }
+          </div>
+        </>
+        :
+        <>
+          <p id="imgLoader">LOADING IMAGES</p>
+        </>
+      }
       </>
       :
       <>
