@@ -6,7 +6,52 @@ html, body {
   width: 100%;
   overflow: hidden; 
 }
+.title {
+  position: absolute;
+  top: 2vh;
+  left: 35.2vw;
+  color: rgb(252, 250, 226);
+  background-color: rgb(9, 30, 52);
+  padding: 5px;
+  border-style: solid;
+  border-color: rgb(129, 180, 219);
+  border-radius: 20px;
+}
+.lobby {
+  position: absolute;
+  top: 37vh;
+  left: 35.5vw;
+  width: 21.5vw;
+  height: 55vh;
+  background: none;
+	border: none;
+}
+.header {
+  position: absolute;
+  top: 7vh;
+  left: 4vw;
+  width: 15vw;
+  height: 35vh;
+  color: rgb(238, 220, 140);
+  background-color: rgb(77, 39, 24);
+  padding: 5px;
+  border-style: solid;
+  border-color: rgb(198, 219, 129);
+  border-radius: 20px;
+}
 
+.statsContainer{
+
+  text-align: left;
+  position: relative;
+  left: 30px;
+  bottom: 10px;
+  margin-bottom: 30px;
+  font-size: larger;
+}
+.stats{
+  padding-bottom: 20px;
+}
 .background-container {
   position: absolute;
   top: 0;

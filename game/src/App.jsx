@@ -56,7 +56,10 @@ const colors = [
 
 const minNumber = 0;
 const maxNumber = 3;
-const speedGame = 400;
+const speedGame = 500;
+const speedIncrease = 50
+const minSpeed = 150
+const maxDiffulty = (speedGame - minSpeed) / speedIncrease
 const imageUrls = [tavern, fail, red, blue, green, yellow];
 
 const [sequence, setSequence] = useState([]);
@@ -69,6 +72,8 @@ const [success, setSuccess] = useState(0);
 const [isGameOn, setIsGameOn] = useState(false);
 const [backgroundImage, setBackgroundImage] = useState(outside);
 const [imagesLoaded, setImagesLoaded] = useState(false);
+const [record, setRecord] = useState(0)
+const [difficulty, setDifficulty] = useState(1)
 
 useEffect(() => {
   preloadImages();
@@ -85,6 +90,7 @@ useEffect(() =>{
       setTimeout(()=>{
         if (index) setBackgroundImage(outside);
         setIsGameOn(false);
+        if (record < Math.ceil(turn)) setRecord(Math.ceil(turn))
       }, speed * 2)
       setIsAllowedToPlay(false);
     }
@@ -97,6 +103,7 @@ useEffect(() => {
     setCurrentGame([]);
     setIsAllowedToPlay(false);
     setSpeed(speedGame);
+    setBackgroundImage(outside);
     setSuccess(0);
     setPulses(0);
     setTurn(0);
@@ -170,6 +177,10 @@ const handleClick = (index) => {
       setBackgroundImage(tavern);
       setCurrentGame([...currentGame, index]);
       setPulses(pulses+1);
+      if (success % 2 === 0 && pulses > 0 && difficulty < maxDiffulty) {
+        const newSpeed = (speed - speedIncrease) < minSpeed ? minSpeed : (speed - speedIncrease)
+        setDifficulty(difficulty+1)
+        setSpeed(newSpeed)}
     }, speed / 2);
   }
 }
@@ -190,7 +201,12 @@ const handleClick = (index) => {
         ?
         <>
           <div className="header">
-            <h1>Turn{turn}</h1>
+              <h1>Stats</h1>
+            <div className="statsContainer">
+              <li className="stats">Round: {turn}</li>
+              <li className="stats">Difficulty Level: {difficulty}</li>
+              <li className="stats">Max Record: {record}</li>
+            </div>
           </div>
           <div className="container">
             {colors.map((item, index) =>{
@@ -214,10 +230,11 @@ const handleClick = (index) => {
       </>
       :
       <>
-        <div className="header">
-          <h1> SUPER SIMON</h1>
+        <div className="title">
+          <h1> SIMON POTIONS </h1>
+          <h2> Knock the door to start the trial </h2>
         </div>
-        <button onClick={initGame}>START</button>
+          <button onClick={initGame} className="lobby"></button>
       </>
     }
     </>
