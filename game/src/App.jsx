@@ -56,8 +56,9 @@ const colors = [
 
 const minNumber = 0;
 const maxNumber = 3;
-const speedGame = 500;
-const speedIncrease = 50
+const initSpeed = 500;
+const speedGame = initSpeed;
+const speedIncrease = 75
 const minSpeed = 150
 const maxDiffulty = (speedGame - minSpeed) / speedIncrease
 const imageUrls = [tavern, fail, red, blue, green, yellow];
@@ -72,7 +73,7 @@ const [success, setSuccess] = useState(0);
 const [isGameOn, setIsGameOn] = useState(false);
 const [backgroundImage, setBackgroundImage] = useState(outside);
 const [imagesLoaded, setImagesLoaded] = useState(false);
-const [record, setRecord] = useState(0)
+const [record, setRecord] = useState(1)
 const [difficulty, setDifficulty] = useState(1)
 
 useEffect(() => {
@@ -102,7 +103,7 @@ useEffect(() => {
     setSequence([]);
     setCurrentGame([]);
     setIsAllowedToPlay(false);
-    setSpeed(speedGame);
+    setSpeed(initSpeed);
     setBackgroundImage(outside);
     setSuccess(0);
     setPulses(0);
@@ -112,7 +113,11 @@ useEffect(() => {
 
 useEffect(() => {
   if (success === sequence.length && success > 0) {
-    setSpeed(speed - sequence.length * 2);
+    if (success % 5 === 0) {
+      const newSpeed = (speed - speedIncrease) < minSpeed ? minSpeed : (speed - speedIncrease)
+      setDifficulty(difficulty+1)
+      setSpeed(newSpeed)
+    }
     setTimeout(() => {
       setSuccess(0);
       setPulses(0);
@@ -177,10 +182,6 @@ const handleClick = (index) => {
       setBackgroundImage(tavern);
       setCurrentGame([...currentGame, index]);
       setPulses(pulses+1);
-      if (success % 2 === 0 && pulses > 0 && difficulty < maxDiffulty) {
-        const newSpeed = (speed - speedIncrease) < minSpeed ? minSpeed : (speed - speedIncrease)
-        setDifficulty(difficulty+1)
-        setSpeed(newSpeed)}
     }, speed / 2);
   }
 }
@@ -205,7 +206,7 @@ const handleClick = (index) => {
             <div className="statsContainer">
               <li className="stats">Round: {turn}</li>
               <li className="stats">Difficulty Level: {difficulty}</li>
-              <li className="stats">Max Record: {record}</li>
+              <li className="stats">Max Level Reached: {record}</li>
             </div>
           </div>
           <div className="container">
